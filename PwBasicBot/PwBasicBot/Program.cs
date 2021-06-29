@@ -15,7 +15,7 @@ namespace PwBasicBot
                 while (true)
                 {
                     var process = FindProcess(PROCESS_NAME);
-                    Console.WriteLine(string.Concat("Procurando processo", PROCESS_NAME));
+                    Console.WriteLine(string.Concat("Procurando processo ", PROCESS_NAME));
                     if (process != null)
                     {
                         Console.WriteLine("Processo encontrado");

@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace PwBasicBot
 {
@@ -19,11 +21,13 @@ namespace PwBasicBot
         public static int gameModuleValue;
 
         private const int ACTION_QUEUE_SIZE = 4;
+        private const int ACTION_TIMEOUT = 300;
         private const int REFRESH_RATE = 500;
 
+        private Timer actionTimer;
         private Queue<IAction> actionQueue;
         private IAction currentAction;
-        private Character player;
+        public static Character player;
 
         public Bot(Process process)
         {
@@ -49,11 +53,14 @@ namespace PwBasicBot
             {
                 BotStatus = BotStatusEnum.RUNNING;
                 CancellationTokenSource cancellationToken = new CancellationTokenSource();
+                actionTimer = new Timer(ACTION_TIMEOUT);
+                actionTimer.Elapsed += DoAction; 
+                actionTimer.Enabled = true;
+                actionTimer.AutoReset = true;
                 while (BotStatus == BotStatusEnum.RUNNING)
                 {
                     AttPlayerStatus();
                     FindNewAction();
-                    DoAction();
                     Task.Delay(REFRESH_RATE, cancellationToken.Token).ConfigureAwait(false);
                 }
             }
@@ -63,7 +70,7 @@ namespace PwBasicBot
             }
         }
 
-        private void DoAction()
+        private void DoAction(Object source, ElapsedEventArgs e)
         {
             if (currentAction != null)
             {
@@ -90,6 +97,9 @@ namespace PwBasicBot
                 return;
 
             actionQueue.Enqueue(new FindEnemy());
+            actionQueue.Enqueue(new Attack());
+            actionQueue.Enqueue(new CollectItens());
+            actionQueue.Enqueue(new Heal());
         }
 
         private void AttPlayerStatus()

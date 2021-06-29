@@ -37,7 +37,7 @@ namespace PwBasicBot.Actions
             Ler memoria e verificar se esta completo a action
 
              */
-            Finish();
+            //Finish();
         }
     }
 }
