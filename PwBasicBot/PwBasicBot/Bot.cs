@@ -1,5 +1,7 @@
 ﻿using PwBasicBot.Actions;
 using PwBasicBot.Enuns;
+using PwBasicBot.Mode;
+using PwBasicBot.Mode.ActionsModes;
 using PwBasicBot.Offsets;
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,9 @@ namespace PwBasicBot
         private Timer actionTimer;
         private Queue<IAction> actionQueue;
         private IAction currentAction;
+        private CancellationTokenSource cancellationToken;
+        private BaseBotActionMode baseBotActionMode;
+
         public static Character player;
 
         public Bot(Process process)
@@ -52,11 +57,16 @@ namespace PwBasicBot
             try
             {
                 BotStatus = BotStatusEnum.RUNNING;
-                CancellationTokenSource cancellationToken = new CancellationTokenSource();
+
+                cancellationToken = new CancellationTokenSource();
+
                 actionTimer = new Timer(ACTION_TIMEOUT);
                 actionTimer.Elapsed += DoAction; 
-                actionTimer.Enabled = true;
                 actionTimer.AutoReset = true;
+                actionTimer.Enabled = true;
+
+                baseBotActionMode = BotModes.farmMode;
+
                 while (BotStatus == BotStatusEnum.RUNNING)
                 {
                     AttPlayerStatus();
@@ -89,6 +99,10 @@ namespace PwBasicBot
             {
                 currentAction = actionQueue.Dequeue();
             }
+
+            /*
+            if (BotStatus == BotStatusEnum.RUNNING)
+                actionTimer.Start();*/
         }
 
         private void FindNewAction()
@@ -96,10 +110,15 @@ namespace PwBasicBot
             if (actionQueue.Count > ACTION_QUEUE_SIZE)
                 return;
 
+            Type nextActionType = baseBotActionMode.NextAction();
+
+            actionQueue.Enqueue((IAction)Activator.CreateInstance(nextActionType));
+
+            /*
             actionQueue.Enqueue(new FindEnemy());
             actionQueue.Enqueue(new Attack());
             actionQueue.Enqueue(new CollectItens());
-            actionQueue.Enqueue(new Heal());
+            actionQueue.Enqueue(new Heal());*/
         }
 
         private void AttPlayerStatus()
@@ -113,6 +132,13 @@ namespace PwBasicBot
             player.CurrentChi = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.currentChi);
             player.MaxChi = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.maxChi);
             player.Gold = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.gold);
+
+            /*
+            if(player.CurrentHp == 0)
+            {
+                BotStatus = BotStatusEnum.STOPING;
+            }*/
+
             //player.PlayerName = Memory.ReadPointerOffsets<string>(gameModuleAddress, AllOffsets.name);
         }
 

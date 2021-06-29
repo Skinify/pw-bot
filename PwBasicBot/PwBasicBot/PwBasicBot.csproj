@@ -73,6 +73,8 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Enuns\KeysEnum.cs" />
     <Compile Include="Memory.cs" />
+    <Compile Include="Mode\ActionsModes\BaseBotActionMode.cs" />
+    <Compile Include="Mode\BotModes.cs" />
     <Compile Include="Offsets\AllOffsets.cs" />
     <Compile Include="Offsets\Base\Offset.cs" />
     <Compile Include="Pinvokes.cs" />

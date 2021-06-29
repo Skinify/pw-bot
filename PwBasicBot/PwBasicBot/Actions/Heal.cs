@@ -18,11 +18,11 @@ namespace PwBasicBot.Actions
 
         public void Start(IntPtr gameWindowHandler)
         {
-            if(Bot.player.CurrentHp < Bot.player.MaxHp / 0.6)
+            if(Bot.player.CurrentHp < Bot.player.MaxHp * 0.6)
             {
                 Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F4, 0);
             }
-            if (Bot.player.CurrentMp < Bot.player.MaxMp / 0.6)
+            if (Bot.player.CurrentMp < Bot.player.MaxMp * 0.6)
             {
                 Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F5, 0);
             }
