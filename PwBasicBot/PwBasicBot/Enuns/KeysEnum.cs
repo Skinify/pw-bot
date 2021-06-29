@@ -17,6 +17,7 @@ namespace PwBasicBot
         VK_MBUTTON = 0x04,
         VK_XBUTTON1 = 0x05,
         VK_XBUTTON2 = 0x06,
+        VK_SPACE = 0x20,
         VK_VOLTAR = 0x08,
         VK_TAB = 0X09,
         VK_LIMPAR = 0x0C,

@@ -18,7 +18,9 @@ namespace PwBasicBot.Actions
 
         public void Start(IntPtr gameWindowHandler)
         {
-            if(Bot.player.CurrentHp < Bot.player.MaxHp * 0.6)
+            ActionStatus = ActionStatusEnum.RUNNING;
+
+            if (Bot.player.CurrentHp < Bot.player.MaxHp * 0.6)
             {
                 Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F4, 0);
             }

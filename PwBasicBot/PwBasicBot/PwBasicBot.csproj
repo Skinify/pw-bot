@@ -59,9 +59,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\FlyAway.cs" />
     <Compile Include="Actions\Base\BaseAction.cs" />
     <Compile Include="Actions\Attack.cs" />
     <Compile Include="Actions\CollectItens.cs" />
+    <Compile Include="Actions\Idle.cs" />
     <Compile Include="Actions\Heal.cs" />
     <Compile Include="Actions\FindEnemy.cs" />
     <Compile Include="Actions\Base\IAction.cs" />

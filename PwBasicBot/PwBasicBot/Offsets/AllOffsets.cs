@@ -21,8 +21,8 @@ namespace PwBasicBot.Offsets
 
         public static Offset gold = new Offset(2848492, new int[] { 0, 0, 0xb4, 0x48, 0x2c, 0xa30, 0x578 });
 
-        public static Offset isTargeting = new Offset(134788, new int[] { 0x78c, 0x80, 0x20c, 0xebc, 0x22c, 0x528, 0x3c });
-        public static Offset isTargetingNpc = new Offset(1166524, new int[] { 0x198, 0x34, 0x55c, 0x438, 0x4, 0x278, 0x90 });
+        public static Offset isTargeting = new Offset(3058812, new int[] { 0x850, 0x4, 0x84, 0x4, 0x4, 0x4, 0x3c });
+        public static Offset isTargetingNpc = new Offset(2246784, new int[] { 0x1a8, 0x1bc, 0x4, 0xc, 0x8, 0x10, 0x90 });
 
         public static Offset name = new Offset(2848492, new int[] { 0, 0, 0xb4, 0x48, 0x2c, 0xa30, 0x6B0 });
     }

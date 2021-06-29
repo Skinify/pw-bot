@@ -12,6 +12,11 @@ namespace PwBasicBot
         [DllImport("user32.dll")]
         public static extern bool PostMessage(IntPtr hWnd, UInt32 Msg, int wParam, int lParam);
 
+        [DllImport("user32.dll")]
+#pragma warning disable IDE1006 // Estilos de Nomenclatura
+        public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
+#pragma warning restore IDE1006 // Estilos de Nomenclatura
+
         [DllImport("kernel32.dll")]
         public static extern IntPtr GetModuleHandle(string lpModuleName);
 

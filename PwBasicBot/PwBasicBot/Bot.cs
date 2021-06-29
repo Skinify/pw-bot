@@ -70,7 +70,6 @@ namespace PwBasicBot
                 while (BotStatus == BotStatusEnum.RUNNING)
                 {
                     AttPlayerStatus();
-                    FindNewAction();
                     Task.Delay(REFRESH_RATE, cancellationToken.Token).ConfigureAwait(false);
                 }
             }
@@ -100,6 +99,8 @@ namespace PwBasicBot
                 currentAction = actionQueue.Dequeue();
             }
 
+            FindNewAction();
+
             /*
             if (BotStatus == BotStatusEnum.RUNNING)
                 actionTimer.Start();*/
@@ -109,16 +110,8 @@ namespace PwBasicBot
         {
             if (actionQueue.Count > ACTION_QUEUE_SIZE)
                 return;
-
             Type nextActionType = baseBotActionMode.NextAction();
-
             actionQueue.Enqueue((IAction)Activator.CreateInstance(nextActionType));
-
-            /*
-            actionQueue.Enqueue(new FindEnemy());
-            actionQueue.Enqueue(new Attack());
-            actionQueue.Enqueue(new CollectItens());
-            actionQueue.Enqueue(new Heal());*/
         }
 
         private void AttPlayerStatus()

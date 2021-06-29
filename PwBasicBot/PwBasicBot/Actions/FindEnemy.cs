@@ -1,6 +1,7 @@
 ﻿using PwBasicBot.Enuns;
 using PwBasicBot.Offsets;
 using System;
+using System.Threading;
 
 namespace PwBasicBot.Actions
 {
@@ -18,26 +19,23 @@ namespace PwBasicBot.Actions
 
         public void Start(IntPtr gameWindowHandler)
         {
-            Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_TAB, 0);
-            
-            var target = Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargeting);
+            ActionStatus = ActionStatusEnum.RUNNING;
 
-            if (target == 1)
+            while (true)
             {
-                var targetNpc = Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc);
-                if (targetNpc == 1)
+                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_TAB, 0);
+                var target = Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargeting);
+
+                if (target == 1)
                 {
-                    Finish();
+                    var targetNpc = Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc);
+                    if (targetNpc == 1)
+                    {
+                        break;
+                    }
                 }
+                Thread.Sleep(500);
             }
-
-
-            /*
-             
-            Ler memoria e verificar se esta completo a action
-
-             */
-            //Finish();
         }
     }
 }
