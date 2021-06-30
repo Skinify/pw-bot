@@ -17,7 +17,7 @@ namespace PwBasicBot
 
        public void Log() {
             var whiteSpace = new StringBuilder();
-            whiteSpace.Append(' ', 20);
+            whiteSpace.Append(' ', 30);
             Console.SetCursorPosition(0, 0);
             var sb = new StringBuilder();
 

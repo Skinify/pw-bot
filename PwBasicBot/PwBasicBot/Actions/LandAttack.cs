@@ -7,7 +7,7 @@ using Timer = System.Timers.Timer;
 
 namespace PwBasicBot.Actions
 {
-    public class Attack : BaseAction, IAction
+    public class LandAttack : BaseAction, IAction
     {
         public void Finish()
         {
@@ -22,6 +22,11 @@ namespace PwBasicBot.Actions
         public void Start(IntPtr gameWindowHandler)
         {
             ActionStatus = ActionStatusEnum.RUNNING;
+
+            if(Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isFlying) == 1)
+            {
+                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F6, 0);
+            }
 
             Timer fightTimeout = new Timer(30000);
             fightTimeout.Elapsed += OnGiveUp;

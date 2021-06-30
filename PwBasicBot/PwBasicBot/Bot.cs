@@ -46,6 +46,7 @@ namespace PwBasicBot
             actionQueue = new Queue<IAction>();
             player = new Character();
             logger = new Logger(this);
+            cancellationToken = new CancellationTokenSource();
             //var AAAAA = Memory.ReadMemory<IntPtr>(gameModuleAddress + AllOffsets.hpOffset.Pointer);
         }
 
@@ -62,14 +63,12 @@ namespace PwBasicBot
             {
                 botStatus = BotStatusEnum.RUNNING;
 
-                cancellationToken = new CancellationTokenSource();
-
                 actionTimer = new Timer(ACTION_TIMEOUT);
                 actionTimer.Elapsed += DoAction; 
                 actionTimer.AutoReset = true;
                 actionTimer.Enabled = true;
 
-                baseBotActionMode = BotModes.farmMode;
+                baseBotActionMode = BotModes.landFarmMode;
 
                 while (botStatus == BotStatusEnum.RUNNING)
                 {
@@ -78,13 +77,13 @@ namespace PwBasicBot
                     Task.Delay(REFRESH_RATE, cancellationToken.Token).ConfigureAwait(false);
                 }
             }
-            catch(Exception)
+            catch(Exception ex)
             {
-                throw new Exception();
+                Console.WriteLine(ex.Message);
             }
         }
 
-        private void DoAction(Object source, ElapsedEventArgs e)
+        private void DoAction(object source, ElapsedEventArgs e)
         {
             if (currentAction != null)
             {
@@ -114,14 +113,24 @@ namespace PwBasicBot
 
             if(player.CurrentHp < player.MaxHp * 0.8)
             {
-                baseBotActionMode = BotModes.runMode;
+                ChangeBotMode(BotModes.flyToHealMode);
             }
             else
-            { 
-                baseBotActionMode = BotModes.farmMode;
+            {
+                ChangeBotMode(BotModes.landFarmMode);
             }
+
             Type nextActionType = baseBotActionMode.NextAction();
             actionQueue.Enqueue((IAction)Activator.CreateInstance(nextActionType));
+        }
+
+        private void ChangeBotMode(BaseBotActionMode mode)
+        {
+            if (baseBotActionMode == mode)
+                return;
+
+            baseBotActionMode = mode;
+            actionQueue.Clear();
         }
 
         private void AttPlayerStatus()
