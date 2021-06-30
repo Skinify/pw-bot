@@ -15,7 +15,7 @@ namespace PwBasicBot
 {
     public class Bot
     {
-        public BotStatusEnum BotStatus { get; private set; }
+        public BotStatusEnum botStatus;
 
         private readonly Process gameProcess;
 
@@ -27,12 +27,15 @@ namespace PwBasicBot
         private const int REFRESH_RATE = 500;
 
         private Timer actionTimer;
-        private Queue<IAction> actionQueue;
-        private IAction currentAction;
         private CancellationTokenSource cancellationToken;
-        private BaseBotActionMode baseBotActionMode;
+
+        public Queue<IAction> actionQueue;
+        public IAction currentAction;
+        public BaseBotActionMode baseBotActionMode;
 
         public static Character player;
+
+        public Logger logger;
 
         public Bot(Process process)
         {
@@ -42,21 +45,22 @@ namespace PwBasicBot
             gameModuleValue = Memory.ReadMemory<int>(gameModuleAddress);
             actionQueue = new Queue<IAction>();
             player = new Character();
+            logger = new Logger(this);
             //var AAAAA = Memory.ReadMemory<IntPtr>(gameModuleAddress + AllOffsets.hpOffset.Pointer);
         }
 
         public void Start()
         {
-            BotStatus = BotStatusEnum.STARTING;
+            botStatus = BotStatusEnum.STARTING;
             Thread gameAtt = new Thread(OnGameUpdate);
             gameAtt.Start();
         } 
 
-        public void OnGameUpdate()
+        private void OnGameUpdate()
         {
             try
             {
-                BotStatus = BotStatusEnum.RUNNING;
+                botStatus = BotStatusEnum.RUNNING;
 
                 cancellationToken = new CancellationTokenSource();
 
@@ -67,9 +71,10 @@ namespace PwBasicBot
 
                 baseBotActionMode = BotModes.farmMode;
 
-                while (BotStatus == BotStatusEnum.RUNNING)
+                while (botStatus == BotStatusEnum.RUNNING)
                 {
                     AttPlayerStatus();
+                    logger.Log();
                     Task.Delay(REFRESH_RATE, cancellationToken.Token).ConfigureAwait(false);
                 }
             }
@@ -100,16 +105,21 @@ namespace PwBasicBot
             }
 
             FindNewAction();
-
-            /*
-            if (BotStatus == BotStatusEnum.RUNNING)
-                actionTimer.Start();*/
         }
 
         private void FindNewAction()
         {
             if (actionQueue.Count > ACTION_QUEUE_SIZE)
                 return;
+
+            if(player.CurrentHp < player.MaxHp * 0.8)
+            {
+                baseBotActionMode = BotModes.runMode;
+            }
+            else
+            { 
+                baseBotActionMode = BotModes.farmMode;
+            }
             Type nextActionType = baseBotActionMode.NextAction();
             actionQueue.Enqueue((IAction)Activator.CreateInstance(nextActionType));
         }
@@ -125,14 +135,6 @@ namespace PwBasicBot
             player.CurrentChi = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.currentChi);
             player.MaxChi = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.maxChi);
             player.Gold = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.gold);
-
-            /*
-            if(player.CurrentHp == 0)
-            {
-                BotStatus = BotStatusEnum.STOPING;
-            }*/
-
-            //player.PlayerName = Memory.ReadPointerOffsets<string>(gameModuleAddress, AllOffsets.name);
         }
 
     }

@@ -26,8 +26,9 @@ namespace PwBasicBot.Actions
             Timer fightTimeout = new Timer(30000);
             fightTimeout.Elapsed += OnGiveUp;
             fightTimeout.Start();
-            while(Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargeting) == 1 && ActionStatus != ActionStatusEnum.FINISHED)
+            while(Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc) == 1 && ActionStatus != ActionStatusEnum.FINISHED)
             {
+                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F3, 0);
                 Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F1, 0);
                 Thread.Sleep(1000);
             }

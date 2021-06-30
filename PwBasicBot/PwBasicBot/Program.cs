@@ -20,6 +20,7 @@ namespace PwBasicBot
                     {
                         Console.WriteLine("Processo encontrado");
                         Bot gameBot = new Bot(process);
+                        Console.WriteLine("Iniciando bot");
                         gameBot.Start();
                         Thread.Sleep(Timeout.Infinite);
                     }

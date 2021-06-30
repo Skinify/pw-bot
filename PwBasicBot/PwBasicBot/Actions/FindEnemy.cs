@@ -23,19 +23,19 @@ namespace PwBasicBot.Actions
 
             while (true)
             {
-                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_TAB, 0);
-                var target = Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargeting);
-
-                if (target == 1)
+                var targetNpc = Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc);
+                if (targetNpc == 1)
                 {
-                    var targetNpc = Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc);
-                    if (targetNpc == 1)
-                    {
-                        break;
-                    }
+                    break;
+                }
+                else
+                {
+                    Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_TAB, 0);
                 }
                 Thread.Sleep(500);
             }
+
+            Finish();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using PwBasicBot.Enuns;
-using PwBasicBot.Offsets;
 using System;
+using System.Threading;
 
 namespace PwBasicBot.Actions
 {
@@ -14,12 +14,17 @@ namespace PwBasicBot.Actions
         public ActionStatusEnum GetActionStatus()
         {
             return ActionStatus;
-        }
+        } 
 
         public void Start(IntPtr gameWindowHandler)
         {
             ActionStatus = ActionStatusEnum.RUNNING;
             Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F8, 0);
+            while(Bot.player.CurrentHp != Bot.player.MaxHp)
+            {
+                Thread.Sleep(1000);
+            }
+            Finish();
         }
     }
 }

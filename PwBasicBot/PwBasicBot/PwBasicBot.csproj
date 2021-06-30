@@ -74,6 +74,7 @@
     <Compile Include="Enuns\KeyStatusEnum.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Enuns\KeysEnum.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="Memory.cs" />
     <Compile Include="Mode\ActionsModes\BaseBotActionMode.cs" />
     <Compile Include="Mode\BotModes.cs" />
