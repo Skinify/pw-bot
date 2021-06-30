@@ -24,7 +24,7 @@ namespace PwBasicBot
             sb.AppendLine(string.Concat("Status do bot: ", Enum.GetName(typeof(BotStatusEnum), bot.botStatus), whiteSpace));
             sb.AppendLine("-------------------------------");
             sb.AppendLine(string.Concat("Modo do bot: ", bot.baseBotActionMode.modeName, whiteSpace));
-            sb.AppendLine(string.Concat("Proxima ação: ", bot.currentAction != null ? bot.currentAction.GetType().Name : "Carregando", whiteSpace));
+            sb.AppendLine(string.Concat("Ação atual: ", bot.currentAction != null ? bot.currentAction.GetType().Name : "Carregando", whiteSpace));
             sb.AppendLine(string.Concat("Fila de ações: ", GetNextActions(bot.actionQueue), whiteSpace));
             sb.AppendLine("-------------------------------");
             sb.AppendLine(string.Concat("Vida personagem: ", Bot.player.CurrentHp, whiteSpace));

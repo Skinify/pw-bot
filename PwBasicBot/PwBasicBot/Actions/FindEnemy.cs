@@ -2,6 +2,8 @@
 using PwBasicBot.Offsets;
 using System;
 using System.Threading;
+using System.Timers;
+using Timer = System.Timers.Timer;
 
 namespace PwBasicBot.Actions
 {
@@ -21,6 +23,10 @@ namespace PwBasicBot.Actions
         {
             ActionStatus = ActionStatusEnum.RUNNING;
 
+            Timer verifyFlyingTimer = new Timer(30000);
+            verifyFlyingTimer.Elapsed += (sender, e) => VerifyIsFlying(sender, e , gameWindowHandler);
+            verifyFlyingTimer.Start();
+
             while (true)
             {
                 var targetNpc = Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc);
@@ -37,5 +43,14 @@ namespace PwBasicBot.Actions
 
             Finish();
         }
+
+        private void VerifyIsFlying(object source, ElapsedEventArgs e, IntPtr gameWindowHandler)
+        {
+            if (Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isFlying) == 1)
+            {
+                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F6, 0);
+            }
+        }
+
     }
 }

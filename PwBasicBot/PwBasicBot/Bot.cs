@@ -130,6 +130,7 @@ namespace PwBasicBot
                 return;
 
             baseBotActionMode = mode;
+            BaseBotActionMode.ResetCounter();
             actionQueue.Clear();
         }
 

@@ -5,7 +5,7 @@ namespace PwBasicBot.Mode.ActionsModes
     public class BaseBotActionMode
     {
         private readonly Type[] actionList;
-        private int actionCounter = 0;
+        private static int actionCounter = 0;
         public string modeName;
 
         public BaseBotActionMode(string modeName, params Type[] actionList)
@@ -25,5 +25,9 @@ namespace PwBasicBot.Mode.ActionsModes
             return nextAction;
         }
 
+        public static void ResetCounter()
+        {
+            actionCounter = 0;
+        }
     }
 }
