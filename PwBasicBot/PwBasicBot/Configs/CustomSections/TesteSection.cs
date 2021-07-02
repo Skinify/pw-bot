@@ -1,39 +1,38 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 
 namespace PwBasicBot.Configs
 {
-    public class TempAddressSection : ConfigurationSection
+    public class TmpAdressSection : ConfigurationSection
     {
         [ConfigurationProperty("Addresses")]
-        [ConfigurationCollection(typeof(TempAddressCollection),
+        [ConfigurationCollection(typeof(AddressCollection),
            AddItemName = "add",
            ClearItemsName = "clear",
            RemoveItemName = "remove")]
-        public TempAddressCollection Addresses
+        public AddressCollection Addresses
         {
             get
             {
-                return (TempAddressCollection)base["Addresses"];
+                return (AddressCollection)base["Addresses"];
             }
         }
     }
 
-    public class TempAddressCollection : ConfigurationElementCollection
+    public class AddressCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()
         {
-            return new TempAddress();
+            return new TmpAddress();
         }
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((TempAddress)element).Address;
+            return ((TmpAddress)element);
         }
 
-        public void Add(TempAddress TempAddress)
+        public void Add(TmpAddress Macro)
         {
-            BaseAdd(TempAddress, false);
+            BaseAdd(Macro, false);
         }
 
         public void Clear()
@@ -41,9 +40,9 @@ namespace PwBasicBot.Configs
             BaseClear();
         }
 
-        public TempAddress this[int index]
+        public TmpAddress this[int index]
         {
-            get { return (TempAddress)BaseGet(index); }
+            get { return (TmpAddress)BaseGet(index); }
             set
             {
                 if (BaseGet(index) != null)
@@ -55,23 +54,23 @@ namespace PwBasicBot.Configs
             }
         }
 
-        public TempAddress Get(string name)
+        public TmpAddress Get(string type)
         {
             var objects = BaseGetAllKeys();
             for(int count = 0; count < objects.Length; count++)
             {
-                if(((objects[count] as TempAddress).Name).Equals(name))
+                if(((objects[count] as TmpAddress).Name).Equals(type))
                 {
-                    return objects[count] as TempAddress;
+                    return objects[count] as TmpAddress;
                 }
             }
             return null;
         }
     }
 
-    public class TempAddress : ConfigurationElement
+    public class TmpAddress : ConfigurationElement
     {
-        [ConfigurationProperty("Name", DefaultValue = (string)"Default", IsRequired = true, IsKey = true)]
+        [ConfigurationProperty("Name", DefaultValue = "Default", IsRequired = true, IsKey = true)]
         public string Name
         {
             get
@@ -80,7 +79,7 @@ namespace PwBasicBot.Configs
             }
         }
 
-        [ConfigurationProperty("Address", DefaultValue = (int)0)]
+        [ConfigurationProperty("Address", DefaultValue = (int)0, IsRequired = true, IsKey = false)]
         public int Address
         {
             get
@@ -88,6 +87,5 @@ namespace PwBasicBot.Configs
                 return (int)base["Address"];
             }
         }
-
     }
 }

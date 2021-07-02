@@ -7,5 +7,6 @@ namespace PwBasicBot.Configs
         public static readonly KeyBindingSection keyBindingConfig = ConfigurationManager.GetSection("KeyBinding") as KeyBindingSection;
         public static readonly TempAddressSection tempAddressConfig = ConfigurationManager.GetSection("TempAddress") as TempAddressSection;
         public static readonly MacroSection macroConfig = ConfigurationManager.GetSection("Macro") as MacroSection;
+        //public static readonly TesteSection testeConfig = ConfigurationManager.GetSection("Teste") as TesteSection;
     }
 }

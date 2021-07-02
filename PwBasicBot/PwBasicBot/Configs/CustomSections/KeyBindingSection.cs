@@ -33,7 +33,7 @@ namespace PwBasicBot.Configs
 
         public void Add(KeyBinding keyBinding)
         {
-            BaseAdd(keyBinding);
+            BaseAdd(keyBinding, false);
         }
 
         public void Clear()
@@ -50,7 +50,8 @@ namespace PwBasicBot.Configs
                 {
                     BaseRemoveAt(index);
                 }
-                BaseAdd(index, value);
+                Add(value);
+                //BaseAdd(index, value);
             }
         }
 
@@ -70,21 +71,21 @@ namespace PwBasicBot.Configs
 
     public class KeyBinding : ConfigurationElement
     {
-        [ConfigurationProperty("Key")]
-        public int Key
-        {
-            get
-            {
-                return (int)base["Key"];
-            }
-        }
 
-        [ConfigurationProperty("Name")]
+        [ConfigurationProperty("Name", DefaultValue = (string)"Default", IsRequired = true, IsKey = true)]
         public string Name
         {
             get
             {
                 return (String)base["Name"];
+            }
+        }
+        [ConfigurationProperty("Key", DefaultValue = (int)0, IsRequired = true)]
+        public int Key
+        {
+            get
+            {
+                return (int)base["Key"];
             }
         }
     }

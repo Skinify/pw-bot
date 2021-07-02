@@ -12,6 +12,8 @@ namespace PwBasicBot
 
         static void Main(string[] args)
         {
+            var macroConfig = ConfigurationManager.GetSection("Macro") as MacroSection;
+            var testeConfig = ConfigurationManager.GetSection("TmpAdress") as TmpAdressSection;
             try
             {
                 while (true)

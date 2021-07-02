@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 
 namespace PwBasicBot.Configs
 {
@@ -33,7 +32,7 @@ namespace PwBasicBot.Configs
 
         public void Add(Macro Macro)
         {
-            BaseAdd(Macro);
+            BaseAdd(Macro, false);
         }
 
         public void Clear()
@@ -50,7 +49,8 @@ namespace PwBasicBot.Configs
                 {
                     BaseRemoveAt(index);
                 }
-                BaseAdd(index, value);
+                Add(value);
+                //BaseAdd(index, value);
             }
         }
 
@@ -70,7 +70,7 @@ namespace PwBasicBot.Configs
 
     public class Macro : ConfigurationElement
     {
-        [ConfigurationProperty("Type")]
+        [ConfigurationProperty("Type", DefaultValue = "Default", IsRequired = true, IsKey = true)]
         public string Type
         {
             get
@@ -79,7 +79,7 @@ namespace PwBasicBot.Configs
             }
         }
 
-        [ConfigurationProperty("Timeout")]
+        [ConfigurationProperty("Timeout", DefaultValue = (int)0, IsRequired = true, IsKey = false)]
         public int Timeout
         {
             get
@@ -88,7 +88,7 @@ namespace PwBasicBot.Configs
             }
         }
 
-        [ConfigurationProperty("MinMP")]
+        [ConfigurationProperty("MinMP", DefaultValue = (int)0, IsRequired = true, IsKey = false)]
         public int MinMP
         {
             get
@@ -97,7 +97,7 @@ namespace PwBasicBot.Configs
             }
         }
 
-        [ConfigurationProperty("Key")]
+        [ConfigurationProperty("Key", DefaultValue = (int)0, IsRequired = true, IsKey = false)]
         public int Key
         {
             get
