@@ -35,5 +35,6 @@ namespace PwBasicBot
         VK_RCONTROL = 0xA3,
         VK_LMENU = 0xA4,
         VK_RMENU = 0xA5,
+        VK_Y_KEY = 0x59,
     }
 }

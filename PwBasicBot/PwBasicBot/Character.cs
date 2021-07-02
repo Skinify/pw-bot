@@ -22,16 +22,9 @@
         public float PoxZ { get; set; }
 
         public float Gold { get; set; }
-        
-        public Character()
-        {
 
-        }
-        public Character(int maxHp, int maxMp, int level)
-        {
-            MaxHp = maxHp;
-            MaxMp = maxMp;
-            Level = level;
-        }
+        public bool Fighting { get; set; }
+        
+        public Character(){}
     }
 }

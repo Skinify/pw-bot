@@ -1,10 +1,12 @@
 ﻿using PwBasicBot.Enuns;
+using PwBasicBot.Items;
 using PwBasicBot.Offsets;
 using System;
+using System.Threading;
 
 namespace PwBasicBot.Actions
 {
-    public class Heal : BaseAction, IAction
+    public class RecoverMp : BaseAction, IAction
     {
         public void Finish()
         {
@@ -20,15 +22,15 @@ namespace PwBasicBot.Actions
         {
             ActionStatus = ActionStatusEnum.RUNNING;
 
-            if (Bot.player.CurrentHp < Bot.player.MaxHp * 0.6)
+            while(ActionStatus == ActionStatusEnum.RUNNING)
             {
-                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F4, 0);
+                if (AllItems.mpPotion.ready)
+                {
+                    AllItems.mpPotion.UseItem(gameWindowHandler);
+                    Finish();
+                }
+                Thread.Sleep(100);
             }
-            if (Bot.player.CurrentMp < Bot.player.MaxMp * 0.6)
-            {
-                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F5, 0);
-            }
-
             Finish();
         }
     }

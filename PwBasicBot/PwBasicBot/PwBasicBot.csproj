@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -24,7 +25,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -145,12 +145,14 @@
     <Compile Include="Actions\Base\BaseAction.cs" />
     <Compile Include="Actions\LandAttack.cs" />
     <Compile Include="Actions\CollectItens.cs" />
-    <Compile Include="Actions\Heal.cs" />
+    <Compile Include="Actions\RecoverMp.cs" />
+    <Compile Include="Actions\RecoverHp.cs" />
     <Compile Include="Actions\FindEnemy.cs" />
     <Compile Include="Actions\Base\IAction.cs" />
     <Compile Include="Bot.cs" />
     <Compile Include="Configs\ConfConstants.cs" />
     <Compile Include="Configs\CustomSections\BindingSection.cs" />
+    <Compile Include="Configs\CustomSections\ItemSection.cs" />
     <Compile Include="Configs\CustomSections\TmpAdressSection.cs" />
     <Compile Include="Configs\CustomSections\MacroSection.cs" />
     <Compile Include="Enuns\ActionStatusEnum.cs" />
@@ -159,6 +161,8 @@
     <Compile Include="Enuns\GameSlotsEnum.cs" />
     <Compile Include="Enuns\KeyStatusEnum.cs" />
     <Compile Include="Enuns\KeysEnum.cs" />
+    <Compile Include="Items\AllItems.cs" />
+    <Compile Include="Items\Base\UsableItem.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Macros\AllMacros.cs" />
     <Compile Include="Macros\Base\MacroAction.cs" />

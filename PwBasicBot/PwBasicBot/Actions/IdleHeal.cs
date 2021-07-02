@@ -23,7 +23,7 @@ namespace PwBasicBot.Actions
 
             Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_ESCAPE, 0);
 
-            Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F8, 0);
+            Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, GameSlotsEnum.ZEN_HEAL, 0);
 
             while (Bot.player.CurrentHp != Bot.player.MaxHp && Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc) == 0)
             {

@@ -24,13 +24,17 @@ namespace PwBasicBot
 
         private const int ACTION_QUEUE_SIZE = 4;
         private const int ACTION_TIMEOUT = 300;
+        private const int ITEM_TIMEOUT = 100;
         private const int REFRESH_RATE = 500;
 
         private Timer actionTimer;
+        private Timer itemsTimer;
         private CancellationTokenSource cancellationToken;
 
         public Queue<IAction> actionQueue;
+        public Queue<IAction> itensQueue;
         public IAction currentAction;
+        public IAction currentItem;
         public ActionMode baseBotActionMode;
 
         public static Character player;
@@ -44,6 +48,7 @@ namespace PwBasicBot
             gameModuleAddress = Memory.GetModuleAddress(string.Concat(gameProcess.ProcessName, ".exe"));
             gameModuleValue = Memory.ReadMemory<int>(gameModuleAddress);
             actionQueue = new Queue<IAction>();
+            itensQueue = new Queue<IAction>();
             player = new Character();
             logger = new Logger(this);
             cancellationToken = new CancellationTokenSource();
@@ -68,6 +73,11 @@ namespace PwBasicBot
                 actionTimer.AutoReset = true;
                 actionTimer.Enabled = true;
 
+                itemsTimer = new Timer(ITEM_TIMEOUT);
+                itemsTimer.Elapsed += UseItem;
+                itemsTimer.AutoReset = true;
+                itemsTimer.Enabled = true;
+
                 baseBotActionMode = AllActionModes.landFarmMode;
 
                 while (botStatus == BotStatusEnum.RUNNING)
@@ -81,6 +91,51 @@ namespace PwBasicBot
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private void VerifyNeedItem()
+        {
+            if (player.CurrentHp < player.MaxHp * 0.8 && player.CurrentHp != 0)
+            {
+                var recoverHp = new RecoverHp();
+                if (!itensQueue.Contains(recoverHp))
+                {
+                    itensQueue.Enqueue(recoverHp);
+                }
+            }
+
+            if (player.CurrentMp < player.MaxMp * 0.8 && player.CurrentMp != 0)
+            {
+                var recoverMp = new RecoverMp();
+                if (!itensQueue.Contains(recoverMp))
+                {
+                    itensQueue.Enqueue(recoverMp);
+                }
+            }
+        }
+
+        private void UseItem(object source, ElapsedEventArgs e)
+        {
+            if (currentItem != null)
+            {
+                if (currentItem.GetActionStatus() == ActionStatusEnum.STARTING)
+                {
+                    currentItem.Start(gameProcess.MainWindowHandle);
+                    return;
+                }
+
+                if (currentItem.GetActionStatus() == ActionStatusEnum.RUNNING)
+                    return;
+
+                if (currentItem.GetActionStatus() == ActionStatusEnum.FINISHED)
+                    currentItem = null;
+            }
+            else if (itensQueue.Count > 0)
+            {
+                currentItem = itensQueue.Dequeue();
+            }
+
+            VerifyNeedItem();
         }
 
         private void DoAction(object source, ElapsedEventArgs e)
@@ -111,7 +166,7 @@ namespace PwBasicBot
             if (actionQueue.Count > ACTION_QUEUE_SIZE)
                 return;
 
-            if(player.CurrentHp < player.MaxHp * 0.8)
+            if(player.CurrentHp < player.MaxHp * 0.6 && !player.Fighting)
             {
                 ChangeBotMode(AllActionModes.flyToHealMode);
             }
@@ -145,6 +200,10 @@ namespace PwBasicBot
             player.CurrentChi = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.currentChi);
             player.MaxChi = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.maxChi);
             player.Gold = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.gold);
+            player.Fighting = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.isTargetingNpc) == 1;
+
+            Pinvokes.PostMessage(gameProcess.MainWindowHandle, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_Y_KEY, 0);
+
         }
 
     }

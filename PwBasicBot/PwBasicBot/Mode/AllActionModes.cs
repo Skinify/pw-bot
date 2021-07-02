@@ -5,7 +5,7 @@ namespace PwBasicBot.Mode
 {
     public class AllActionModes
     {
-        public static ActionMode landFarmMode = new ActionMode("LandFarm", typeof(FindEnemy), typeof(LandAttack), typeof(CollectItens), typeof(Heal));
+        public static ActionMode landFarmMode = new ActionMode("LandFarm", typeof(FindEnemy), typeof(LandAttack), typeof(CollectItens));
         public static ActionMode flyToHealMode = new ActionMode("Heal", /*typeof(FlyAway),*/ typeof(IdleHeal));
     }
 }

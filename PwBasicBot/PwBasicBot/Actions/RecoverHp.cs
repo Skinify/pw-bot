@@ -1,10 +1,12 @@
 ﻿using PwBasicBot.Enuns;
+using PwBasicBot.Items;
+using PwBasicBot.Offsets;
 using System;
 using System.Threading;
 
 namespace PwBasicBot.Actions
 {
-    public class CollectItens : BaseAction, IAction
+    public class RecoverHp : BaseAction, IAction
     {
         public void Finish()
         {
@@ -20,12 +22,15 @@ namespace PwBasicBot.Actions
         {
             ActionStatus = ActionStatusEnum.RUNNING;
 
-            for (int count = 0; count < 5; count++)
+            while(ActionStatus == ActionStatusEnum.RUNNING)
             {
-                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, GameSlotsEnum.GRAB_ITEMS, 0);
-                Thread.Sleep(300);
+                if (AllItems.hpPotion.ready)
+                {
+                    AllItems.hpPotion.UseItem(gameWindowHandler);
+                    Finish();
+                }
+                Thread.Sleep(100);
             }
-
             Finish();
         }
     }

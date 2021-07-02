@@ -48,7 +48,7 @@ namespace PwBasicBot.Actions
         {
             if (Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isFlying) == 1)
             {
-                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F6, 0);
+                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, GameSlotsEnum.FLY, 0);
             }
         }
 

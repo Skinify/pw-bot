@@ -22,7 +22,7 @@ namespace PwBasicBot.Actions
         {
             ActionStatus = ActionStatusEnum.RUNNING;
             Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_ESCAPE, 0);
-            Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F6, 0);
+            Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, GameSlotsEnum.FLY, 0);
             Pinvokes.keybd_event((byte)KeysEnum.VK_SPACE, 0xb9, 0, UIntPtr.Zero);
             Thread.Sleep(10000);
             Pinvokes.keybd_event((byte)KeysEnum.VK_SPACE, 0xb9, 0x0002, UIntPtr.Zero);
