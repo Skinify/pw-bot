@@ -1,6 +1,4 @@
-﻿using PwBasicBot.Configs;
-using System;
-using System.Configuration;
+﻿using System;
 using System.Diagnostics;
 using System.Threading;
 
@@ -12,9 +10,6 @@ namespace PwBasicBot
 
         static void Main(string[] args)
         {
-            var macroConfig = ConfigurationManager.GetSection("Macro") as MacroSection;
-            var testeConfig = ConfigurationManager.GetSection("TmpAdress") as TmpAdressSection;
-            var aaaaasdasdaa = ConfigurationManager.GetSection("Binding") as BindingSection;
             try
             {
                 while (true)

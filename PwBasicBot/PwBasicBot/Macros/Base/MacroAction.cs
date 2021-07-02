@@ -31,6 +31,7 @@ namespace PwBasicBot.Macros.Base
                 {
                     Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, key, 0);
                     macroTimeOut.Start();
+                    ready = false;
                 }
             }
         }

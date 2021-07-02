@@ -34,8 +34,15 @@ namespace PwBasicBot.Actions
             fightTimeout.Start();
             while(Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc) == 1 && ActionStatus != ActionStatusEnum.FINISHED)
             {
-                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F3, 0);
-                Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F1, 0);
+                
+                if (Macros.AllMacros.attackMacro.ready)
+                {
+                    Macros.AllMacros.attackMacro.UseMacro(gameWindowHandler);
+                }
+                else
+                {
+                    Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)GameSlotsEnum.BASIC_ATTACK, 0);
+                }
                 Thread.Sleep(1000);
             }
 

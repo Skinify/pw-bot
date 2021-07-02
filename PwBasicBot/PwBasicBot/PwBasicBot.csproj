@@ -153,8 +153,6 @@
     <Compile Include="Configs\CustomSections\BindingSection.cs" />
     <Compile Include="Configs\CustomSections\TmpAdressSection.cs" />
     <Compile Include="Configs\CustomSections\MacroSection.cs" />
-    <Compile Include="Configs\CustomSections\TempAddressSection.cs" />
-    <Compile Include="Configs\CustomSections\KeyBindingSection.cs" />
     <Compile Include="Enuns\ActionStatusEnum.cs" />
     <Compile Include="Enuns\BotStatusEnum.cs" />
     <Compile Include="Character.cs" />
