@@ -150,7 +150,8 @@
     <Compile Include="Actions\Base\IAction.cs" />
     <Compile Include="Bot.cs" />
     <Compile Include="Configs\ConfConstants.cs" />
-    <Compile Include="Configs\CustomSections\TesteSection.cs" />
+    <Compile Include="Configs\CustomSections\BindingSection.cs" />
+    <Compile Include="Configs\CustomSections\TmpAdressSection.cs" />
     <Compile Include="Configs\CustomSections\MacroSection.cs" />
     <Compile Include="Configs\CustomSections\TempAddressSection.cs" />
     <Compile Include="Configs\CustomSections\KeyBindingSection.cs" />

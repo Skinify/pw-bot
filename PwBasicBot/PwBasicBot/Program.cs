@@ -14,6 +14,7 @@ namespace PwBasicBot
         {
             var macroConfig = ConfigurationManager.GetSection("Macro") as MacroSection;
             var testeConfig = ConfigurationManager.GetSection("TmpAdress") as TmpAdressSection;
+            var aaaaasdasdaa = ConfigurationManager.GetSection("Binding") as BindingSection;
             try
             {
                 while (true)
