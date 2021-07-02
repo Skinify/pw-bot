@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PwBasicBot.Configs;
+using System;
+using System.Configuration;
 using System.Diagnostics;
 using System.Threading;
 

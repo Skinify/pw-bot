@@ -23,9 +23,9 @@ namespace PwBasicBot.Actions
         {
             ActionStatus = ActionStatusEnum.RUNNING;
 
-            Timer verifyFlyingTimer = new Timer(30000);
+            Timer verifyFlyingTimer = new Timer(5000);
             verifyFlyingTimer.Elapsed += (sender, e) => VerifyIsFlying(sender, e , gameWindowHandler);
-            verifyFlyingTimer.Start();
+            //verifyFlyingTimer.Start();
 
             while (true)
             {
@@ -38,7 +38,7 @@ namespace PwBasicBot.Actions
                 {
                     Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_TAB, 0);
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(100);
             }
 
             Finish();

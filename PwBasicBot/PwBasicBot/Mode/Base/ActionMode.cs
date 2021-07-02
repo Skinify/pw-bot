@@ -2,13 +2,13 @@
 
 namespace PwBasicBot.Mode.ActionsModes
 {
-    public class BaseBotActionMode
+    public class ActionMode
     {
         private readonly Type[] actionList;
         private static int actionCounter = 0;
         public string modeName;
 
-        public BaseBotActionMode(string modeName, params Type[] actionList)
+        public ActionMode(string modeName, params Type[] actionList)
         {
             this.modeName = modeName;
             this.actionList = actionList;

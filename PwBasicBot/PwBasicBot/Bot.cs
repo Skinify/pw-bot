@@ -31,7 +31,7 @@ namespace PwBasicBot
 
         public Queue<IAction> actionQueue;
         public IAction currentAction;
-        public BaseBotActionMode baseBotActionMode;
+        public ActionMode baseBotActionMode;
 
         public static Character player;
 
@@ -68,7 +68,7 @@ namespace PwBasicBot
                 actionTimer.AutoReset = true;
                 actionTimer.Enabled = true;
 
-                baseBotActionMode = BotModes.landFarmMode;
+                baseBotActionMode = AllActionModes.landFarmMode;
 
                 while (botStatus == BotStatusEnum.RUNNING)
                 {
@@ -113,24 +113,24 @@ namespace PwBasicBot
 
             if(player.CurrentHp < player.MaxHp * 0.8)
             {
-                ChangeBotMode(BotModes.flyToHealMode);
+                ChangeBotMode(AllActionModes.flyToHealMode);
             }
             else
             {
-                ChangeBotMode(BotModes.landFarmMode);
+                ChangeBotMode(AllActionModes.landFarmMode);
             }
 
             Type nextActionType = baseBotActionMode.NextAction();
             actionQueue.Enqueue((IAction)Activator.CreateInstance(nextActionType));
         }
 
-        private void ChangeBotMode(BaseBotActionMode mode)
+        private void ChangeBotMode(ActionMode mode)
         {
             if (baseBotActionMode == mode)
                 return;
 
             baseBotActionMode = mode;
-            BaseBotActionMode.ResetCounter();
+            ActionMode.ResetCounter();
             actionQueue.Clear();
         }
 

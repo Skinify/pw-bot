@@ -59,16 +59,23 @@ namespace PwBasicBot
         }
 
         public static T ReadPointerOffsets<T>(int baseAddress, Offset offsetWrapper) where T : struct
-        {
-            IntPtr ptr = ReadMemory<IntPtr>(baseAddress + offsetWrapper.Pointer);
-            var memoryOffset = 0;
-            for (int count = 0; count < offsetWrapper.Offsets.Length; count++)
+        {   
+            if(offsetWrapper.TempAddress != 0)
             {
-                memoryOffset = ptr.ToInt32() + offsetWrapper.Offsets[count];
-                ptr = ReadMemory<IntPtr>(memoryOffset);
+                return ReadMemory<T>(offsetWrapper.TempAddress);
             }
+            else
+            {
+                IntPtr ptr = ReadMemory<IntPtr>(baseAddress + offsetWrapper.Pointer);
+                var memoryOffset = 0;
+                for (int count = 0; count < offsetWrapper.Offsets.Length; count++)
+                {
+                    memoryOffset = ptr.ToInt32() + offsetWrapper.Offsets[count];
+                    ptr = ReadMemory<IntPtr>(memoryOffset);
+                }
 
-            return ReadMemory<T>(memoryOffset);
+                return ReadMemory<T>(memoryOffset);
+            }
         }
 
         public static T ReadMultpleAddress<T>(int start, params int[] addresses) where T : struct
