@@ -15,7 +15,7 @@ namespace PwBasicBot.Mode
             switch (mode.ToLower())
             {
                 case "landfarm": return landFarmMode;
-                case "Farmminerals": return farmMinerals;
+                case "farmminerals": return farmMinerals;
                 default: return landFarmMode;
             }
         }
