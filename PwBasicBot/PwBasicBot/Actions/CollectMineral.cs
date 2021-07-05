@@ -83,6 +83,7 @@ namespace PwBasicBot.Actions
                                             Pinvokes.mouse_event((int)MouseEventEnum.LeftDown, 0, 0, 0, 0);
                                             Pinvokes.mouse_event((int)MouseEventEnum.LeftUp, 0, 0, 0, 0);
                                             sucess = true;
+                                            Thread.Sleep(200);
                                         }
                                     }
                                 } while (iterator.Next(pageLevel));
