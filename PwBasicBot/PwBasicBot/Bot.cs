@@ -23,7 +23,7 @@ namespace PwBasicBot
         public static int gameModuleValue;
 
         private const int ACTION_QUEUE_SIZE = 4;
-        private const int ACTION_TIMEOUT = 300;
+        private const int ACTION_TIMEOUT = 100;
         private const int ITEM_TIMEOUT = 100;
         private const int REFRESH_RATE = 500;
 
@@ -40,6 +40,10 @@ namespace PwBasicBot
         public static Character player;
 
         public Logger logger;
+
+        public Timer cityRecall;
+
+        private bool recall = false;
 
         public Bot(Process process)
         {
@@ -78,7 +82,16 @@ namespace PwBasicBot
                 itemsTimer.AutoReset = true;
                 itemsTimer.Enabled = true;
 
-                baseBotActionMode = AllActionModes.landFarmMode;
+                if(Configs.ConfConstants.cityRecall != 0)
+                {
+                    cityRecall = new Timer(Configs.ConfConstants.cityRecall);
+                    cityRecall.AutoReset = false;
+                    cityRecall.Enabled = false;
+                    cityRecall.Elapsed += (source, e) => recall = true;
+                    cityRecall.Start();
+                }
+
+                baseBotActionMode = AllActionModes.farmMinerals;
 
                 while (botStatus == BotStatusEnum.RUNNING)
                 {
@@ -104,7 +117,7 @@ namespace PwBasicBot
                 }
             }
 
-            if (player.CurrentMp < player.MaxMp * 0.8 && player.CurrentMp != 0)
+            if (player.CurrentMp < player.MaxMp * 0.6 && player.CurrentMp != 0)
             {
                 var recoverMp = new RecoverMp();
                 if (!itensQueue.Contains(recoverMp))
@@ -166,17 +179,28 @@ namespace PwBasicBot
             if (actionQueue.Count > ACTION_QUEUE_SIZE)
                 return;
 
-            if(player.CurrentHp < player.MaxHp * 0.6 && !player.Fighting)
+            Type nextActionType = baseBotActionMode.NextAction();
+            actionQueue.Enqueue((IAction)Activator.CreateInstance(nextActionType));
+
+            /*
+            if(recall)
             {
-                ChangeBotMode(AllActionModes.flyToHealMode);
+                ChangeBotMode(AllActionModes.baseRecallMode);
             }
             else
             {
-                ChangeBotMode(AllActionModes.landFarmMode);
+                if (player.CurrentHp < player.MaxHp * 0.6 && !player.Fighting)
+                {
+                    ChangeBotMode(AllActionModes.flyToHealMode);
+                }
+                else
+                {
+                    ChangeBotMode(AllActionModes.landFarmMode);
+                }
             }
 
             Type nextActionType = baseBotActionMode.NextAction();
-            actionQueue.Enqueue((IAction)Activator.CreateInstance(nextActionType));
+            actionQueue.Enqueue((IAction)Activator.CreateInstance(nextActionType));*/
         }
 
         private void ChangeBotMode(ActionMode mode)

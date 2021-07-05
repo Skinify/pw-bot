@@ -20,7 +20,7 @@ namespace PwBasicBot.Actions
         {
             ActionStatus = ActionStatusEnum.RUNNING;
 
-            for (int count = 0; count < 5; count++)
+            for (int count = 0; count < 6; count++)
             {
                 Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, GameSlotsEnum.GRAB_ITEMS, 0);
                 Thread.Sleep(300);

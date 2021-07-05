@@ -48,5 +48,19 @@ namespace PwBasicBot
 
         [DllImport("ntdll.dll", SetLastError = true)]
         public static extern NTSTATUS NtWriteVirtualMemory(int ProcessHandle, int BaseAddress, byte[] Buffer, int NumberOfBytesToWrite, ref int NumberOfBytesWritten);
+
+        [DllImport("user32.dll", EntryPoint = "SetCursorPos")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool SetCursorPos(int x, int y);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetCursorPos(out POINT lpMousePoint);
+
+        [DllImport("user32.dll")]
+        public static extern void mouse_event(int dwFlags, int dx, int dy, int dwData, int dwExtraInfo);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool GetWindowRect(IntPtr hwnd, out RECT lpRect);
     }
 }
