@@ -32,7 +32,9 @@ namespace PwBasicBot.Actions
             Timer fightTimeout = new Timer(30000);
             fightTimeout.Elapsed += OnGiveUp;
             fightTimeout.Start();
-            while(Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc) == 1 && ActionStatus != ActionStatusEnum.FINISHED)
+            while(Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc) == 1 && 
+                ActionStatus != ActionStatusEnum.FINISHED && 
+                Bot.BotStatus == BotStatusEnum.RUNNING)
             {
                 
                 if (Macros.AllMacros.attackMacro.ready)

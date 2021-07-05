@@ -22,7 +22,7 @@ namespace PwBasicBot.Actions
         {
             ActionStatus = ActionStatusEnum.RUNNING;
 
-            while(ActionStatus == ActionStatusEnum.RUNNING && Bot.player.CurrentHp != 0)
+            while(ActionStatus == ActionStatusEnum.RUNNING && Bot.player.CurrentHp != 0 && Bot.BotStatus == BotStatusEnum.RUNNING)
             {
                 if (AllItems.hpPotion.ready)
                 {

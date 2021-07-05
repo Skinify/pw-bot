@@ -21,7 +21,7 @@ namespace PwBasicBot
             Console.SetCursorPosition(0, 0);
             var sb = new StringBuilder();
 
-            sb.AppendLine(string.Concat("Status do bot: ", Enum.GetName(typeof(BotStatusEnum), bot.botStatus), whiteSpace));
+            sb.AppendLine(string.Concat("Status do bot: ", Enum.GetName(typeof(BotStatusEnum), Bot.BotStatus), whiteSpace));
             sb.AppendLine("-------------------------------");
             sb.AppendLine(string.Concat("Modo do bot: ", bot.baseBotActionMode.modeName, whiteSpace));
             sb.AppendLine(string.Concat("Ação atual: ", bot.currentAction != null ? bot.currentAction.GetType().Name : "Carregando", whiteSpace));
@@ -29,8 +29,14 @@ namespace PwBasicBot
             sb.AppendLine("-------------------------------");
             sb.AppendLine(string.Concat("Vida personagem: ", Bot.player.CurrentHp, whiteSpace));
             sb.AppendLine(string.Concat("Mp personagem: ", Bot.player.CurrentMp, whiteSpace));
-
+            sb.AppendLine("-------------------------------");
+            sb.AppendLine("Comandos:");
+            sb.AppendLine("P = Pausa o bot");
+            sb.AppendLine("L = Liga o bot");
+            sb.AppendLine("M = Muda o modo do bot(Ex: M LandFarm)");
+            sb.AppendLine("R = Reseta configurações");
             Console.Write(sb);
+            Console.Write(string.Concat("> ", whiteSpace));
        }
 
         private string GetNextActions(Queue<IAction> actionQueue)

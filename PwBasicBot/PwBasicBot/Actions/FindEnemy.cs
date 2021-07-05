@@ -27,7 +27,7 @@ namespace PwBasicBot.Actions
             verifyFlyingTimer.Elapsed += (sender, e) => VerifyIsFlying(sender, e , gameWindowHandler);
             //verifyFlyingTimer.Start();
 
-            while (true)
+            while (Bot.BotStatus == BotStatusEnum.RUNNING)
             {
                 var targetNpc = Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc);
                 if (targetNpc == 1)

@@ -15,7 +15,7 @@ namespace PwBasicBot
 {
     public class Bot
     {
-        public BotStatusEnum botStatus;
+        public static BotStatusEnum BotStatus;
 
         private readonly Process gameProcess;
 
@@ -29,7 +29,6 @@ namespace PwBasicBot
 
         private Timer actionTimer;
         private Timer itemsTimer;
-        private CancellationTokenSource cancellationToken;
 
         public Queue<IAction> actionQueue;
         public Queue<IAction> itensQueue;
@@ -55,13 +54,12 @@ namespace PwBasicBot
             itensQueue = new Queue<IAction>();
             player = new Character();
             logger = new Logger(this);
-            cancellationToken = new CancellationTokenSource();
             //var AAAAA = Memory.ReadMemory<IntPtr>(gameModuleAddress + AllOffsets.hpOffset.Pointer);
         }
 
         public void Start()
         {
-            botStatus = BotStatusEnum.STARTING;
+            BotStatus = BotStatusEnum.STARTING;
             Thread gameAtt = new Thread(OnGameUpdate);
             gameAtt.Start();
         } 
@@ -70,7 +68,7 @@ namespace PwBasicBot
         {
             try
             {
-                botStatus = BotStatusEnum.RUNNING;
+                BotStatus = BotStatusEnum.RUNNING;
 
                 actionTimer = new Timer(ACTION_TIMEOUT);
                 actionTimer.Elapsed += DoAction; 
@@ -91,18 +89,41 @@ namespace PwBasicBot
                     cityRecall.Start();
                 }
 
-                baseBotActionMode = AllActionModes.farmMinerals;
+                baseBotActionMode = AllActionModes.landFarmMode;
 
-                while (botStatus == BotStatusEnum.RUNNING)
+                while (BotStatus != BotStatusEnum.STOPING)
                 {
                     AttPlayerStatus();
                     logger.Log();
-                    Task.Delay(REFRESH_RATE, cancellationToken.Token).ConfigureAwait(false);
+                    Console.SetCursorPosition(2, 14);
+                    string command = Console.ReadLine();
+                    InterpretCommand(command);
+                    Task.Delay(REFRESH_RATE).ConfigureAwait(false);
                 }
             }
             catch(Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+        }
+
+        public void InterpretCommand(string command)
+        {
+            if (command.Equals("") || command.Equals(" "))
+                return;
+
+            string[] args = command.Split();
+
+            switch (args[0].ToLower())
+            {
+                case "p": BotStatus = BotStatusEnum.PAUSED;break;
+                case "l": BotStatus = BotStatusEnum.RUNNING;break;
+                case "r": Configs.ConfConstants.Reset();break;
+                case "m":
+                    {
+                        ChangeBotMode(AllActionModes.GetActionMode(args[1]));
+                        break;
+                    }
             }
         }
 
@@ -129,6 +150,9 @@ namespace PwBasicBot
 
         private void UseItem(object source, ElapsedEventArgs e)
         {
+            if (BotStatus != BotStatusEnum.RUNNING)
+                return;
+
             if (currentItem != null)
             {
                 if (currentItem.GetActionStatus() == ActionStatusEnum.STARTING)
@@ -153,6 +177,9 @@ namespace PwBasicBot
 
         private void DoAction(object source, ElapsedEventArgs e)
         {
+            if (BotStatus != BotStatusEnum.RUNNING)
+                return;
+
             if (currentAction != null)
             {
                 if (currentAction.GetActionStatus() == ActionStatusEnum.STARTING){
@@ -208,6 +235,7 @@ namespace PwBasicBot
             if (baseBotActionMode == mode)
                 return;
 
+            currentAction = null;
             baseBotActionMode = mode;
             ActionMode.ResetCounter();
             actionQueue.Clear();
