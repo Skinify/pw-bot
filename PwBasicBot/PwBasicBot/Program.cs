@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 using System.Threading;
 
 namespace PwBasicBot
@@ -16,11 +17,10 @@ namespace PwBasicBot
                 {
                     var process = FindProcess(PROCESS_NAME);
                     Console.WriteLine(string.Concat("Procurando processo ", PROCESS_NAME));
-                    if (process != null)
+                    var selectedProcess = ProcessSelect(process);
+                    if (selectedProcess != null)
                     {
-                        Console.WriteLine("Processo encontrado");
-                        Bot gameBot = new Bot(process);
-                        Console.WriteLine("Iniciando bot");
+                        Bot gameBot = new Bot(selectedProcess);
                         gameBot.Start();
                         Thread.Sleep(Timeout.Infinite);
                     }
@@ -33,17 +33,53 @@ namespace PwBasicBot
             }
         }
 
-        static Process FindProcess(string process)
+        static Process[] FindProcess(string process)
         {
             Process[] processes = Process.GetProcessesByName(PROCESS_NAME);
             if (processes.Length > 0)
             {
-                return processes[0];
+                return processes;
             }
             else
             {
                 return null;
             }
+        }
+
+        static Process ProcessSelect(Process[] processes)
+        {            
+            while(true)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("Indice / ID / Nome\n\n");
+                int[] allOptions = new int[processes.Length];
+                for(int count = 0; count < processes.Length; count++)
+                {
+                    allOptions[count] = count;
+                    sb.Append(string.Concat(count, " / ", processes[count].Id, " / ", processes[count].ProcessName,"\n"));
+                }
+                sb.Append("\n");
+                sb.Append("Selecione o indice do processo desejado > ");
+                Console.Write(sb);
+                string ind = Console.ReadLine();
+                if (ind.IsNumber())
+                {
+                    if (Array.Exists(allOptions, option => option.Equals(Convert.ToInt32(ind))))
+                    {
+                        Console.Clear();
+                        return processes[Convert.ToInt32(ind)];
+                    }
+                    else
+                    {
+                        Console.WriteLine("Essa opção nao existe");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Digite apenas numeros");
+                }
+            }
+            return null;
         }
     }
 }

@@ -15,5 +15,10 @@
             }
             return false;
         }
+
+        public static bool IsNumber(this string text)
+        {
+            return int.TryParse(text, out _);
+        }
     }
 }

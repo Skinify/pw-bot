@@ -29,6 +29,11 @@ namespace PwBasicBot.Actions
                 Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_F6, 0);
             }*/
 
+            if (Macros.AllMacros.buffMacro.ready)
+            {
+                Macros.AllMacros.buffMacro.UseMacro(gameWindowHandler);
+            }
+
             Timer fightTimeout = new Timer(30000);
             fightTimeout.Elapsed += OnGiveUp;
             fightTimeout.Start();
