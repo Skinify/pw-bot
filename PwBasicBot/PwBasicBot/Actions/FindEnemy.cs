@@ -39,7 +39,7 @@ namespace PwBasicBot.Actions
                 {
                     tentativas--;
                     var targetName = Memory.ReadString(Bot.gameModuleAddress, AllOffsets.targetName, Configs.ConfConstants.namesLength);
-                    if (targetName.MatchArray(Configs.ConfConstants.prioritizeMobs))
+                    if (targetName.NearMatchArray(Configs.ConfConstants.prioritizeMobs))
                     {
                         tentativas = 0;
                     }

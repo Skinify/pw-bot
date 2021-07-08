@@ -89,7 +89,7 @@ namespace PwBasicBot
                     cityRecall.Start();
                 }
 
-                baseBotActionMode = AllActionModes.landFarmMode;
+                baseBotActionMode = AllActionModes.farmMinerals;
 
                 while (BotStatus != BotStatusEnum.STOPING)
                 {

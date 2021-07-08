@@ -38,8 +38,8 @@ namespace PwBasicBot.Configs
             mineralRespawn = Convert.ToInt32(ConfigurationManager.AppSettings["mineralRespawn"]);
             tryGetDropNTimes = Convert.ToInt32(ConfigurationManager.AppSettings["tryGetDropNTimes"]);
             namesLength = Convert.ToInt32(ConfigurationManager.AppSettings["namesLength"]);
-            minerals = ConfigurationManager.AppSettings["minerals"].Split(',');
-            prioritizeMobs = ConfigurationManager.AppSettings["prioritizeMobs"].Split(',');
+            minerals = ConfigurationManager.AppSettings["minerals"] != "" ? ConfigurationManager.AppSettings["minerals"].Split(',') : Array.Empty<string>();
+            prioritizeMobs = ConfigurationManager.AppSettings["prioritizeMobs"] != "" ? ConfigurationManager.AppSettings["prioritizeMobs"].Split(',') : Array.Empty<string>();
             AllOffsets.Reset();
             AllMacros.Reset();
             AllItems.Reset();
