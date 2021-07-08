@@ -17,7 +17,10 @@ namespace PwBasicBot.Configs
         public static TmpAdressSection tmpAddressConfig;
         public static int cityRecall;
         public static int mineralRespawn;
+        public static int tryGetDropNTimes;
+        public static int namesLength;
         public static string[] minerals;
+        public static string[] prioritizeMobs;
 
         static ConfConstants()
         {
@@ -32,7 +35,11 @@ namespace PwBasicBot.Configs
             tmpAddressConfig = ConfigurationManager.GetSection("TmpAdress") as TmpAdressSection;
             cityRecall = Convert.ToInt32(ConfigurationManager.AppSettings["cityRecall"]);
             mineralRespawn = Convert.ToInt32(ConfigurationManager.AppSettings["mineralRespawn"]);
+            mineralRespawn = Convert.ToInt32(ConfigurationManager.AppSettings["mineralRespawn"]);
+            tryGetDropNTimes = Convert.ToInt32(ConfigurationManager.AppSettings["tryGetDropNTimes"]);
+            namesLength = Convert.ToInt32(ConfigurationManager.AppSettings["namesLength"]);
             minerals = ConfigurationManager.AppSettings["minerals"].Split(',');
+            prioritizeMobs = ConfigurationManager.AppSettings["prioritizeMobs"].Split(',');
             AllOffsets.Reset();
             AllMacros.Reset();
             AllItems.Reset();

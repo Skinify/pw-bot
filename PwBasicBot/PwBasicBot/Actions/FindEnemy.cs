@@ -27,10 +27,29 @@ namespace PwBasicBot.Actions
             verifyFlyingTimer.Elapsed += (sender, e) => VerifyIsFlying(sender, e , gameWindowHandler);
             //verifyFlyingTimer.Start();
 
+            int tentativas = 6;
+
+            int startingFightAux = 0;
+
             while (Bot.BotStatus == BotStatusEnum.RUNNING)
             {
                 var targetNpc = Memory.ReadPointerOffsets<int>(Bot.gameModuleAddress, AllOffsets.isTargetingNpc);
-                if (targetNpc == 1)
+
+                if (Configs.ConfConstants.prioritizeMobs.Length > 0)
+                {
+                    tentativas--;
+                    var targetName = Memory.ReadString(Bot.gameModuleAddress, AllOffsets.targetName, Configs.ConfConstants.namesLength);
+                    if (targetName.MatchArray(Configs.ConfConstants.prioritizeMobs))
+                    {
+                        tentativas = 0;
+                    }
+                }
+                else
+                {
+                    tentativas = 0;
+                }
+
+                if ((targetNpc == 1 && tentativas <= 0) || (startingFightAux == 0 && targetNpc == 1))
                 {
                     break;
                 }
@@ -38,6 +57,7 @@ namespace PwBasicBot.Actions
                 {
                     Pinvokes.PostMessage(gameWindowHandler, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_TAB, 0);
                 }
+                startingFightAux++;
                 Thread.Sleep(100);
             }
 

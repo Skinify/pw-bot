@@ -25,7 +25,7 @@ namespace PwBasicBot
         private const int ACTION_QUEUE_SIZE = 4;
         private const int ACTION_TIMEOUT = 100;
         private const int ITEM_TIMEOUT = 100;
-        private const int REFRESH_RATE = 500;
+        private const int REFRESH_RATE = 16;
 
         private Timer actionTimer;
         private Timer itemsTimer;
@@ -129,7 +129,7 @@ namespace PwBasicBot
 
         private void VerifyNeedItem()
         {
-            if (player.CurrentHp < player.MaxHp * 0.8 && player.CurrentHp != 0)
+            if (player.CurrentHp < player.MaxHp * 0.85 && player.CurrentHp != 0)
             {
                 var recoverHp = new RecoverHp();
                 if (!itensQueue.Contains(recoverHp))
@@ -138,7 +138,7 @@ namespace PwBasicBot
                 }
             }
 
-            if (player.CurrentMp < player.MaxMp * 0.6 && player.CurrentMp != 0)
+            if (player.CurrentMp < player.MaxMp * 0.85 && player.CurrentMp != 0)
             {
                 var recoverMp = new RecoverMp();
                 if (!itensQueue.Contains(recoverMp))
@@ -206,6 +206,9 @@ namespace PwBasicBot
             if (actionQueue.Count > ACTION_QUEUE_SIZE)
                 return;
 
+            if (baseBotActionMode == null)
+                return;
+
             Type nextActionType = baseBotActionMode.NextAction();
             actionQueue.Enqueue((IAction)Activator.CreateInstance(nextActionType));
 
@@ -252,10 +255,9 @@ namespace PwBasicBot
             player.CurrentChi = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.currentChi);
             player.MaxChi = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.maxChi);
             player.Gold = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.gold);
-            player.Fighting = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.isTargetingNpc) == 1;
+            player.Targeting = Memory.ReadPointerOffsets<int>(gameModuleAddress, AllOffsets.isTargetingNpc) == 1;
 
             Pinvokes.PostMessage(gameProcess.MainWindowHandle, (uint)KeyStatusEnum.WM_KEYDOWN, (int)KeysEnum.VK_Y_KEY, 0);
-
         }
 
     }

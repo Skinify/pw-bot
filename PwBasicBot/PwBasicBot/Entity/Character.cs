@@ -23,7 +23,7 @@
 
         public float Gold { get; set; }
 
-        public bool Fighting { get; set; }
+        public bool Targeting { get; set; }
         
         public Character(){}
     }

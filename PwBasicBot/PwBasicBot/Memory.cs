@@ -58,6 +58,40 @@ namespace PwBasicBot
             return ByteArrayToStructure<T>(buffer);
         }
 
+        public static string ReadString(int baseAddress, Offset offsetWrapper, int maxlength)
+        {
+            var bytearray = new byte[maxlength * 2];
+
+            int bytesread = IntPtr.Zero.ToInt32();
+
+            if (offsetWrapper.TempAddress != 0)
+            {
+                Pinvokes.NtReadVirtualMemory((int)m_iProcessHandle, offsetWrapper.TempAddress, bytearray, maxlength * 2, ref bytesread);
+            }
+            else
+            {
+                IntPtr ptr = ReadMemory<IntPtr>(baseAddress + offsetWrapper.Pointer);
+                var memoryOffset = 0;
+                for (int count = 0; count < offsetWrapper.Offsets.Length; count++)
+                {
+                    memoryOffset = ptr.ToInt32() + offsetWrapper.Offsets[count];
+                    ptr = ReadMemory<IntPtr>(memoryOffset);
+                }
+
+                Pinvokes.NtReadVirtualMemory((int)m_iProcessHandle, memoryOffset, bytearray, maxlength * 2, ref bytesread);
+            }
+
+            int nullterm = 0;
+            while (nullterm < bytesread && bytearray[nullterm] != 0)
+            {
+                nullterm = nullterm + 2;
+            }
+
+            string s = Encoding.Unicode.GetString(bytearray, 0, nullterm);
+
+            return s;
+        }
+
         public static T ReadPointerOffsets<T>(int baseAddress, Offset offsetWrapper) where T : struct
         {   
             if(offsetWrapper.TempAddress != 0)

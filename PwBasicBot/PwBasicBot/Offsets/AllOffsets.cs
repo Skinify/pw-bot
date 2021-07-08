@@ -4,7 +4,7 @@ namespace PwBasicBot.Offsets
 {
     public class AllOffsets
     {
-        public static Offset exp, level, cultivo, currentHp, maxHp, currentMp, maxMp, currentChi, maxChi, gold, isTargeting, isTargetingNpc, isFlying, name;
+        public static Offset exp, level, cultivo, currentHp, maxHp, currentMp, maxMp, currentChi, maxChi, gold, isTargeting, isTargetingNpc, isFlying, name, targetName;
         static AllOffsets()
         {
             Reset();
@@ -49,6 +49,9 @@ namespace PwBasicBot.Offsets
 
             name = new Offset(2848492, new int[] { 0, 0, 0xb4, 0x48, 0x2c, 0xa30, 0x6B0 },
                 Configs.ConfConstants.tmpAddressConfig.Addresses.Get("name").Address);
+
+            targetName = new Offset(2848492, new int[] { 0, 0, 0xb4, 0x48, 0x2c, 0xa30, 0x6B0 },
+                Configs.ConfConstants.tmpAddressConfig.Addresses.Get("targetName").Address);
         }
 
         /*

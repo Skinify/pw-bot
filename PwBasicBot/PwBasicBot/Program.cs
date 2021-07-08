@@ -79,7 +79,6 @@ namespace PwBasicBot
                     Console.WriteLine("Digite apenas numeros");
                 }
             }
-            return null;
         }
     }
 }
